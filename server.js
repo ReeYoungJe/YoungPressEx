@@ -5,7 +5,10 @@ const express = require('express');
 const app = express();
 
 // 서버가 사용할 포트 번호를 설정합니다
-const port = 3001;
+const port = 3002;
+
+// src 폴더를 웹사이트의 기본 폴더로 설정
+app.use(express.static('src'));
 
 // 미들웨어 설정 영역
 // app.use() 를 통해 필요한 미들웨어를 추가할 수 있습니다
@@ -18,7 +21,7 @@ const port = 3001;
  */
 app.get('/', (req, res) => {
   // res.send()를 사용하여 클라이언트에게 응답을 보냅니다
-  res.send('ㅎㅇ');
+  res.sendFile(path.join(__dirname, 'src', 'index.html'));
 });
 
 /**
