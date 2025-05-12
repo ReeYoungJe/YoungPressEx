@@ -1,11 +1,18 @@
 // express 모듈을 불러옵니다
 const express = require('express');
 
+// 미들웨어 추가 로그용
+// const morgan = require('morgan');
+
+
 // express 애플리케이션을 생성합니다
 const app = express();
 
 // 서버가 사용할 포트 번호를 설정합니다
 const port = 3002;
+
+
+// app.use((morgan('dev')));
 
 // src 폴더를 웹사이트의 기본 폴더로 설정
 app.use(express.static('src'));
@@ -22,6 +29,8 @@ app.use(express.static('src'));
 app.get('/', (req, res) => {
   // res.send()를 사용하여 클라이언트에게 응답을 보냅니다
   res.sendFile(path.join(__dirname, 'src', 'index.html'));
+  console.log(`로그 ${req.url}`);
+
 });
 
 /**
@@ -31,6 +40,8 @@ app.get('/', (req, res) => {
  */
 app.listen(port, () => {
   console.log(`서버가 포트 ${port}에서 실행 중입니다`);
+  console.log(__dirname)
+
 });
 
 // 추가 기능을 위한 예시 라우트들:
