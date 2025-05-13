@@ -1,70 +1,30 @@
-// express 모듈을 불러옵니다
 const express = require('express');
-
-// 미들웨어 추가 로그용
-// const morgan = require('morgan');
-
-
-// express 애플리케이션을 생성합니다
 const app = express();
-
-// 서버가 사용할 포트 번호를 설정합니다
 const port = 3002;
+const path = require('path');
+import ejs from "ejs";
 
+// 미들웨어 함수 - 디버깅 로그 추가
+const filterByExtension = (allowedExtensions) => {
+    return (req, res, next) => {
+        // 디버깅용 로그
+        const ext = path.extname(req.path).toLowerCase();
+        // 주의: 허용된 확장자일 때 next()로 진행
+        if (allowedExtensions.includes(ext)) {
+            return next();
+        }
+        // 허용되지 않은 확장자는 차단
+        return res.status(403).send('원하는 확장자 아님');
+    };
+};
 
-// app.use((morgan('dev')));
+// CSS 폴더 설정
+app.use('/css', filterByExtension(['.css']), express.static('src/css'));
+// JS 폴더 설정
+app.use('/js', filterByExtension(['.js']), express.static('src/js'));
+// Pages 폴더 설정
+app.use('/page', filterByExtension(['.html', '.ejs']), express.static('src/page'));
 
-// src 폴더를 웹사이트의 기본 폴더로 설정
-app.use(express.static('src'));
-
-// 미들웨어 설정 영역
-// app.use() 를 통해 필요한 미들웨어를 추가할 수 있습니다
-
-// 라우팅 설정 영역 시작
-/**
- * 기본 경로('/')에 대한 GET 요청을 처리합니다
- * req: 클라이언트로부터의 요청 객체 (request)
- * res: 클라이언트에게 보낼 응답 객체 (response)
- */
-app.get('/', (req, res) => {
-  // res.send()를 사용하여 클라이언트에게 응답을 보냅니다
-  res.sendFile(path.join(__dirname, 'src', 'index.html'));
-  console.log(`로그 ${req.url}`);
-
-});
-
-/**
- * 서버를 지정된 포트에서 실행합니다
- * 첫 번째 매개변수: 포트 번호
- * 두 번째 매개변수: 서버가 실행될 때 호출될 콜백 함수
- */
 app.listen(port, () => {
-  console.log(`서버가 포트 ${port}에서 실행 중입니다`);
-  console.log(__dirname)
-
+    console.log(`서버가 포트 ${port}에서 실행 중입니다`);
 });
-
-// 추가 기능을 위한 예시 라우트들:
-
-/**
- * POST 요청 처리 예시
- * app.post('/api/data', (req, res) => {
- *   // POST 요청 처리 로직
- * });
- */
-
-/**
- * 동적 라우트 파라미터 사용 예시
- * app.get('/user/:id', (req, res) => {
- *   const userId = req.params.id;
- *   // userId를 사용한 처리 로직
- * });
- */
-
-/**
- * 에러 처리 미들웨어 예시
- * app.use((err, req, res, next) => {
- *   console.error(err.stack);
- *   res.status(500).send('서버 에러가 발생했습니다!');
- * });
- */
