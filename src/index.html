@@ -2,24 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Document</title>
-    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-src 안에 나임<br>
-<a href="page/main/index.html">main</a>
-<a href="page/test2/index.html">ddd</a>
-<a href="page/test3/index.html">ddd</a>
-
-
-<script>
-    app.get('/user/:name/:age', function (req, res) {
-        var params = req.params;
-        console.log(params);
-
-        res.send("User Name : " + params.name + " / User Age : " + params.age);
-    });
-</script>
+<!-- 변수 사용 -->
+<% const name = '영제' %>
+<h1>안녕하세요, <%= name %>님!</h1>
 </body>
 </html>
